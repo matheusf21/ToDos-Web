@@ -1,0 +1,13 @@
+git config --global user.name matheusf21
+git config --global user.email matheusferreiradelima21@gmail.com
+
+-- Criar projeto MVC
+dotnet new mvc -o ToDoPlatform
+
+cd
+
+dotnet add package Microsoft.EntityFrameworkCore --version 10.0.3
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 10.0.3
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 10.0.3
+dotnet add package MySql.EntityFrameworkCore --version 10.0.1
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 10.0.3
