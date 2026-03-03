@@ -56,18 +56,20 @@ public class AppDbSeed
                 ProfilePicture = "/img/users/19878399-84da-48de-8132-407af7cff87a",
             },
         };
+
         foreach (var user in users)
         {
-            PasswordHasher<IdentityUser> pass = new();
+            PasswordHasher<AppUser> pass = new();
             user.PasswordHash = pass.HashPassword(user, "123456");
         }
+
         builder.Entity<AppUser>().HasData(users);
         #endregion
 
         #region Popular Dados de Usuário Perfil
-        List<IdentityRole<string>> userRoles = new()
+        List<IdentityUserRole<string>> userRoles = new()
         {
-            new IdentityRole<string>()
+            new IdentityUserRole<string>()
             {
                 UserId = users[0].Id,
                 RoleId = roles[0].Id
@@ -78,11 +80,11 @@ public class AppDbSeed
                 RoleId = roles[1].Id
             },
         };
-        builder. Entity<IdentityUserRole<string>>().HasData(userRoles);
 
+        builder.Entity<IdentityUserRole<string>>().HasData(userRoles);
         #endregion
 
-        #region
+        #region Popular ToDos
         List<ToDo> toDos = new()
         {
             new ToDo()
@@ -90,8 +92,11 @@ public class AppDbSeed
                 Id = 1,
                 Title = "Ler livro do Seminário",
                 Description = "Finalizar até 27/03",
-                UserId= users[0].Id
+                UserId = users[0].Id
             },
         };
-        #endregion
 
+        builder.Entity<ToDo>().HasData(toDos);
+        #endregion
+    }
+}
