@@ -1,0 +1,50 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDos Platform - Login</title>
+    <link rel="stylesheet" href="~/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">ToDos Platform</div>
+            <h1 class="form-title">Bem-vindo de volta!</h1>
+            
+            <div class="error-message" id="errorMessage">
+                Email ou senha inválidos
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Senha</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div class="remember-forgot">
+                    <label class="remember">
+                        <input type="checkbox"> Lembrar-me
+                    </label>
+                    <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                </div>
+
+                <button type="submit" class="btn-login">Entrar</button>
+                
+                <div class="register-link">
+                    Não tem uma conta? <a href="registro.html">Cadastre-se</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
