@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ToDoPlatform.Models;
 
-namespace ToDoPlatform.MOdels;
+namespace ToDoPlatform.Models;
 
 [Table("todos")]
 public class ToDo
