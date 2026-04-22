@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ToDoPlatform.Models;
-using ToDoPlatform.MOdels;
 
 namespace ToDoPlatform.Data;
 

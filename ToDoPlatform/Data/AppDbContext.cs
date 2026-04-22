@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ToDoPlatform.Models;
-using ToDoPlatform.MOdels;
 
 namespace ToDoPlatform.Data;
 public class AppDbContext : IdentityDbContext<AppUser>
