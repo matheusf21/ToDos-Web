@@ -27,7 +27,7 @@
                     <input class="form-input" asp-for="Email" />
                     <span class="error-message" asp-validationfor="Email"></span>
                 </div>
-                <div class="form-group">
+                 <div class="form-group">
                     <label class="form-label" aspfor="Password"></label>
                     <input class="form-input" asp-for="Password" />
                     <span class="error-message" asp-validationfor="Password"></span>
@@ -35,40 +35,60 @@
                         <div class="strength-bar"
 id="strengthBar"></div>
                     </div>
-</div>
-<div class="form-group">
-<label class="form-label" aspfor="ConfirmPassword"></label>
-<input class="form-input" asp-for="ConfirmPassword"
+                </div>
+                <div class="form-group">
+                    <label class="form-label" aspfor="ConfirmPassword"></label>
+                    <input class="form-input" asp-for="ConfirmPassword"
 />
-<span class="error-message" asp-validationfor="ConfirmPassword"></span>
-</div>
-<div class="terms">
-<div>
-<input type="checkbox" asp-for="Terms" />
-<label asp-for="Terms">Eu concordo com os <a
-href="#">Termos de Serviço</a> e <a
-href="#">Política de
-Privacidade</a>
-</label>
-</div>
-<span class="error-message" style="display: block;"
+                    <span class="error-message" asp-validationfor="ConfirmPassword"></span>
+                </div>
+                <div class="terms">
+                    <div>
+                        <input type="checkbox" asp-for="Terms" />
+                        <label asp-for="Terms">Eu concordo com os <a
+                            href="#">Termos de Serviço</a> e <a
+                            href="#">Política de
+                            Privacidade</a>
+                        </label>
+                    </div>
+                    <span class="error-message" style="display: block;"
 asp-validation-for="Terms"></span>
-</div>
-<button type="submit" class="btn-login"
+                </div>
+                <button type="submit" class="btn-login"
 disabled="@(TempData["Success"] != null)">Criar Conta</button>
-<div class="register-link">
-Já tem uma conta? <a asp-action="Login">Faça
-login</a>
-</div>
-</form>
-</div>
-</div>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<partial name="_ValidationScriptsPartial" />
-<partial name="_Notification" />
-<script>
-if ('@TempData["Success"]' !== "") {
-showMessage(null, '@TempData["Success"]', 3000,
+                <div class="register-link">
+                    Já tem uma conta? <a asp-action="Login">Faça
+                    login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_Notification" />
+    <script>
+        if ('@TempData["Success"]' !== "") {
+            showMessage(null, '@TempData["Success"]', 3000,
 '/Account/Login');
 }
-if ('@TempData["Failure"]' !== "") {
+        if ('@TempData["Failure"]' !== "") {
+        showMessage("warning", '@TempData["Failure"]', 5000, null); }
+     $('#registerForm').on('submit', function (e) {
+         // Primeiro verifica se o formulário é válido (validações padrão)
+         if (!$(this).valid()) {
+             e.preventDefault(); 
+             return false; 
+             }
+              // Depois verifica os termos 
+        var isChecked = $('#Terms').is(':checked');
+        if (!isChecked) { 
+            e.preventDefault();
+            $('#Terms').focus();
+            showMessage('warning', 'Você deve aceitar os termos para
+continuar', 3000, null);
+                return false; 
+            } 
+        }); 
+    </script> 
+</body> 
+</html>
