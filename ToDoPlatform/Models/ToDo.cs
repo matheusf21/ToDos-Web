@@ -29,5 +29,5 @@ public class ToDo
     public bool Done { get; set; } = false;
 
     [Display(Name = "Data de cadastro")]
-    public DateTime CreateAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 }

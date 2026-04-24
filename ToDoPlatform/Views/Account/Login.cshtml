@@ -1,3 +1,5 @@
+@model LoginVM
+
 @{
     Layout = null;
 }
@@ -23,25 +25,25 @@
             <form id="loginForm">
                 <div class="form-group">
                     <label class="form-label" for="email">Email</label>
-                    <input type="email" id="email" class="form-input" placeholder="seu@email.com" required>
+                        <input asp-for="Email" type="email" id="email" class="form-input" placeholder="seu@email.com" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="password">Senha</label>
-                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                        <label class="form-label" for="password">Senha</label>
+                        <input asp-for="Password" type="password" id="password" class="form-input" placeholder="••••••••" required>
                 </div>
 
                 <div class="remember-forgot">
-                    <label class="remember">
-                        <input type="checkbox"> Lembrar-me
-                    </label>
+                        <label class="remember">
+                            <input asp-for="RememberMe" type="checkbox"> Lembrar-me
+                        </label>
                     <a href="#" class="forgot-password">Esqueceu a senha?</a>
                 </div>
 
-                <button type="submit" class="btn-login">Entrar</button>
+                <button type="submit" class="btn-login" disabled="@TempData["Success"] != null">Entrar</button>
                 
                 <div class="register-link">
-                    Não tem uma conta? <a href="registro.html">Cadastre-se</a>
+                    Não tem uma conta? <a asp-action="Register" asp-controller="Account">Cadastre-se</a>
                 </div>
             </form>
         </div>

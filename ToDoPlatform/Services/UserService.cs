@@ -1,5 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using ToDoPlatform.Data;
 using ToDoPlatform.Helpers;
 using ToDoPlatform.Models;
 using ToDoPlatform.ViewModels;
@@ -11,16 +13,43 @@ public class UserService : IUserService
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly ILogger<UserService> _logger;
+    private readonly AppDbContext _dbContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public UserService(
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
-        ILogger<UserService> logger
+        ILogger<UserService> logger,
+        AppDbContext dbContext,
+        IHttpContextAccessor httpContextAccessor
     )
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
+        _dbContext = dbContext;
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public async Task<UserVM> GetLoggedUser()
+    {
+        var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null) return null;
+
+        var user = await _dbContext.AppUsers.SingleOrDefaultAsync(u => u.Id == userId);
+        var roles = string.Join(", ", await _userManager.GetRolesAsync(user));
+        var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+
+        return new UserVM
+        {
+            Id = user.Id,
+            UserName = user.UserName,
+            Name = user.Name,
+            Email = user.Email,
+            ProfilePicture = user.ProfilePicture,
+            Roles = roles,
+            IsAdmin = isAdmin
+        };        
     }
 
     public async Task<SignInResult> Login(LoginVM login)
@@ -52,37 +81,38 @@ public class UserService : IUserService
         _logger.LogInformation($"Usuário '{ClaimTypes.Email}' saiu do sistema");
         await _signInManager.SignOutAsync();
     }
-}
 
-public async Task<List<string>> Register(RegisterVM register)
-{
-    var user = new AppUser()
+
+    public async Task<List<string>> Register(RegisterVM register)
     {
-        Name = register.Name,
-        UserName = register.Email,
-        NormalizedUserName = register.Email.Normalize(),
-        Email = register.Email,
-        NormalizedEmail = register.Email.Normalize(),
-        EmailConfirmed = true,
-        LockoutEnabled = true,
-    };
-
-    var addUser = await _userManager.CreateAsync(user, register.Password);
-
-    List<string> result = [];
-
-    if (addUser.Succeeded)
-    {
-        _logger.LogInformation($"Novo usuário registrado: {register.Email}");
-        await _userManager.AddToRoleAsync(user, "Usuário");
-    }
-    else
-    {
-        foreach (var error in addUser.Errors)
+        var user = new AppUser()
         {
-            result.Add(TranslateIdentityErrors.TranslateErrorMessage(error.Code));
-        }
-    }
+            Name = register.Name,
+            UserName = register.Email,
+            NormalizedUserName = register.Email.Normalize(),
+            Email = register.Email,
+            NormalizedEmail = register.Email.Normalize(),
+            EmailConfirmed = true,
+            LockoutEnabled = true,
+        };
 
-    return result;
+        var addUser = await _userManager.CreateAsync(user, register.Password);
+
+        List<string> result = [];
+
+        if (addUser.Succeeded)
+        {
+            _logger.LogInformation($"Novo usuário registrado: {register.Email}");
+            await _userManager.AddToRoleAsync(user, "Usuário");
+        }
+        else
+        {
+            foreach (var error in addUser.Errors)
+            {
+                result.Add(error.Code);
+            }
+        }
+
+        return result;
+    }
 }
